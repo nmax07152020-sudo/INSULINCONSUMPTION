@@ -824,6 +824,10 @@ function savePatient(){
    },900);
  }
 }
+function apiBase(){
+  // Vercel uses a same-origin proxy; local file:// keeps the direct Apps Script URL.
+  return (location.protocol==='http:'||location.protocol==='https:') ? '/api/' : SCRIPT_URL;
+}
 function jsonp(url){
  return new Promise((resolve,reject)=>{
    const cb="insulinJsonp_"+Date.now()+"_"+Math.random().toString(36).slice(2);
@@ -841,7 +845,7 @@ function loadLive(afterSave=false){
     setStatus("● CONNECTING...","loading");
   }
   // This works from a normal file:// page without google.script.run.
-  const url=SCRIPT_URL+'?api=1';
+  const url=apiBase()+'?api=1';
   const request=jsonp(url).then(d=>{
     if(d&&Array.isArray(d.records)){
       DATA=d.records;
@@ -940,7 +944,7 @@ function saveEditedPatient(){
  }else{
    const params={action:"updatePatient",...d};
    const query=Object.keys(params).map(k=>encodeURIComponent(k)+"="+encodeURIComponent(params[k]==null?"":params[k])).join("&");
-   jsonp(SCRIPT_URL+"?"+query).then(success).catch(fail);
+   jsonp(apiBase()+"?"+query).then(success).catch(fail);
  }
 }
 
