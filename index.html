@@ -825,8 +825,9 @@ function savePatient(){
  }
 }
 function apiBase(){
-  // Vercel uses a same-origin proxy; local file:// keeps the direct Apps Script URL.
-  return (location.protocol==='http:'||location.protocol==='https:') ? '/api/' : SCRIPT_URL;
+  // Use the deployed Google Apps Script Web App directly.
+  // The backend already supports JSONP, so this works on Vercel and file://.
+  return SCRIPT_URL;
 }
 function jsonp(url){
  return new Promise((resolve,reject)=>{
