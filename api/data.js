@@ -5,6 +5,7 @@ export default async function handler(req, res) {
     const params = new URLSearchParams(req.query || {});
     params.delete('callback');
 
+    params.set('api','1');
     const target = `${SCRIPT_URL}?${params.toString()}`;
     const response = await fetch(target, { redirect: 'follow' });
     const text = await response.text();
